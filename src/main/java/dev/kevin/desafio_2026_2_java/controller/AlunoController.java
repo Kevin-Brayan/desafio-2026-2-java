@@ -21,9 +21,9 @@ public class AlunoController {
 
     @PostMapping("/cadastrar")
     public AlunoDTO cadastrarAluno(@RequestBody AlunoDTO alunoRequest) {
-        AlunoDTO alunoDTO = alunoService.cadastrarAluno(alunoRequest);
 
-        return alunoDTO;
+        return alunoService.cadastrarAluno(alunoRequest);
+
     }
 
 }

@@ -1,4 +1,14 @@
 package dev.kevin.desafio_2026_2_java.dto;
 
-public class TipoDocDTO {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class TipoDocDTO{
+
+    private Long id;
+    private String nome;
 }

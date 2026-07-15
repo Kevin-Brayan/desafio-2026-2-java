@@ -27,7 +27,7 @@ public class Solicitacao {
 
     @ManyToOne
     @JoinColumn(name = "tipo_id")
-    private TipoDocumento tipo;
+    private TipoDocumento tipoDocumento;
 
     private LocalDateTime dataSolicitacao;
 
