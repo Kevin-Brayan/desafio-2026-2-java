@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/tipoDoc")
+@RequestMapping("/tipoDocumento")
 public class TipoDocController {
 
     private final TipoDocService tipoDocService;

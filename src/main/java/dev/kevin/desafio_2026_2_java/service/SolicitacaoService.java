@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -55,10 +56,43 @@ public class SolicitacaoService {
 
     }
 
-    public Page<SolicitacaoDTO> listarSolicitacao(int page, int size) {
+    public Page<SolicitacaoDTO> listarSolicitacao(String aluno, String curso, String status, String tipoDocumento, LocalDate inicioData, LocalDate fimData, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Solicitacao> pagina = solicitacaoRepository.findAll(pageable);
+        Page<Solicitacao> pagina ;
+
+        if (aluno != null && !aluno.isBlank()) {
+
+            pagina = solicitacaoRepository
+                    .findByAlunoNomeContainingIgnoreCase(aluno, pageable);
+
+        } else if (curso != null && !curso.isBlank()) {
+
+            pagina = solicitacaoRepository
+                    .findByCursoNomeContainingIgnoreCase(curso, pageable);
+
+        } else if (status != null && !status.isBlank()) {
+
+            pagina = solicitacaoRepository
+                    .findByStatusNome(status, pageable);
+
+        } else if (tipoDocumento != null && !tipoDocumento.isBlank()) {
+
+            pagina = solicitacaoRepository
+                    .findByTipoDocumentoNomeContainingIgnoreCase(tipoDocumento, pageable);
+
+        } else if (inicioData != null && fimData != null) {
+            LocalDateTime inicio = inicioData.atStartOfDay();
+            LocalDateTime fim = fimData.plusDays(1).atStartOfDay().minusNanos(1);
+
+            pagina = solicitacaoRepository
+                    .findByDataSolicitacaoBetween(inicio, fim, pageable);
+
+        } else {
+
+            pagina = solicitacaoRepository.findAll(pageable);
+
+        }
 
         return pagina.map(solicitacaoMapper::map);
 

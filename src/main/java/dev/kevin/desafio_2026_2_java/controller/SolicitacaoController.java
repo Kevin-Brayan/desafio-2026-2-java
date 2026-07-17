@@ -34,6 +34,6 @@ public class SolicitacaoController {
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "10") int size
             ){
-        return solicitacaoService.listarSolicitacao(page, size);
+        return solicitacaoService.listarSolicitacao(aluno, curso, status, tipoDocumento, inicio, fim, page, size);
     }
 }
