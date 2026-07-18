@@ -1,6 +1,9 @@
 package dev.kevin.desafio_2026_2_java.service;
 
+import dev.kevin.desafio_2026_2_java.dto.DocumentoEstatisticaDTO;
+import dev.kevin.desafio_2026_2_java.dto.PeriodoEstatisticaDTO;
 import dev.kevin.desafio_2026_2_java.dto.SolicitacaoDTO;
+import dev.kevin.desafio_2026_2_java.dto.StatusEstatisticaDTO;
 import dev.kevin.desafio_2026_2_java.entity.*;
 import dev.kevin.desafio_2026_2_java.entity.Solicitacao;
 import dev.kevin.desafio_2026_2_java.mapper.SolicitacaoMapper;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -95,6 +99,42 @@ public class SolicitacaoService {
         }
 
         return pagina.map(solicitacaoMapper::map);
+
+    }
+
+    public List<StatusEstatisticaDTO> contarPorStatus() {
+        List<Object[]> dados = solicitacaoRepository.contarPorStatus();
+
+        return dados.stream()
+                .map(obj -> new StatusEstatisticaDTO(
+                        (String) obj[0],
+                        (Long) obj[1]
+                ))
+                .toList();
+    }
+
+    public PeriodoEstatisticaDTO contarPorPeriodo(LocalDate inicioDate, LocalDate fimDate) {
+        LocalDateTime inicio = inicioDate.atStartOfDay();
+        LocalDateTime fim = fimDate.plusDays(1).atStartOfDay().minusNanos(1);
+
+        PeriodoEstatisticaDTO periodoEstatisticaDTO = new PeriodoEstatisticaDTO();
+        Long qtd = solicitacaoRepository.contarPorPeriodo(inicio, fim);
+
+        periodoEstatisticaDTO.setInicio(inicio);
+        periodoEstatisticaDTO.setFim(fim);
+        periodoEstatisticaDTO.setQuantidade(qtd);
+
+        return periodoEstatisticaDTO;
+    }
+
+    public List<DocumentoEstatisticaDTO> documentosMaisSolicitados() {
+
+        return solicitacaoRepository.documentosMaisSolicitados().stream()
+                .map(obj -> new DocumentoEstatisticaDTO(
+                        (String) obj[0],
+                        (Long) obj[1]
+                ))
+                .toList();
 
     }
 

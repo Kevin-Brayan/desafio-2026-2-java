@@ -1,6 +1,9 @@
 package dev.kevin.desafio_2026_2_java.controller;
 
+import dev.kevin.desafio_2026_2_java.dto.DocumentoEstatisticaDTO;
+import dev.kevin.desafio_2026_2_java.dto.PeriodoEstatisticaDTO;
 import dev.kevin.desafio_2026_2_java.dto.SolicitacaoDTO;
+import dev.kevin.desafio_2026_2_java.dto.StatusEstatisticaDTO;
 import dev.kevin.desafio_2026_2_java.entity.Solicitacao;
 import dev.kevin.desafio_2026_2_java.service.SolicitacaoService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/solicitacao")
@@ -36,4 +41,21 @@ public class SolicitacaoController {
             ){
         return solicitacaoService.listarSolicitacao(aluno, curso, status, tipoDocumento, inicio, fim, page, size);
     }
+
+    @GetMapping("/estatisticas/status")
+    public List<StatusEstatisticaDTO> contarPorStatus() {
+        return solicitacaoService.contarPorStatus();
+    }
+
+    @GetMapping("/estatisticas/periodo")
+    public PeriodoEstatisticaDTO contarPorPeriodo(@RequestParam LocalDate inicio, @RequestParam LocalDate fim) {
+        return solicitacaoService.contarPorPeriodo(inicio, fim);
+    }
+
+    @GetMapping("/estatisticas/documentos-mais-solicitados")
+    public List<DocumentoEstatisticaDTO> documentosMaisSolicitados() {
+        return solicitacaoService.documentosMaisSolicitados();
+    }
+
+
 }

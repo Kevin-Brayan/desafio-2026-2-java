@@ -4,9 +4,10 @@ import dev.kevin.desafio_2026_2_java.entity.Solicitacao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
 
@@ -36,4 +37,26 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
             Pageable pageable
     );
 
+    @Query("""
+    SELECT s.status.nome, COUNT(s)
+    FROM Solicitacao s
+    GROUP BY s.status.nome
+    """)
+    List<Object[]> contarPorStatus();
+
+    @Query("""
+    SELECT COUNT(s)
+    FROM Solicitacao s
+    WHERE s.dataSolicitacao BETWEEN :inicio AND :fim
+    """)
+    Long contarPorPeriodo(LocalDateTime inicio, LocalDateTime fim);
+
+
+    @Query("""
+    SELECT s.tipoDocumento.nome, COUNT(s)
+    FROM Solicitacao s
+    GROUP BY s.tipoDocumento.nome
+    ORDER BY COUNT(s) DESC
+    """)
+    List<Object[]> documentosMaisSolicitados();
 }
