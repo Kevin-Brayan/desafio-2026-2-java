@@ -1,9 +1,6 @@
 package dev.kevin.desafio_2026_2_java.service;
 
-import dev.kevin.desafio_2026_2_java.dto.DocumentoEstatisticaDTO;
-import dev.kevin.desafio_2026_2_java.dto.PeriodoEstatisticaDTO;
-import dev.kevin.desafio_2026_2_java.dto.SolicitacaoDTO;
-import dev.kevin.desafio_2026_2_java.dto.StatusEstatisticaDTO;
+import dev.kevin.desafio_2026_2_java.dto.*;
 import dev.kevin.desafio_2026_2_java.entity.*;
 import dev.kevin.desafio_2026_2_java.entity.Solicitacao;
 import dev.kevin.desafio_2026_2_java.mapper.SolicitacaoMapper;
@@ -136,6 +133,46 @@ public class SolicitacaoService {
                 ))
                 .toList();
 
+    }
+
+    public SolicitacaoDTO alterarStatus(AlterarStatusDTO request) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(request.getSolicitacaoId())
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        Status novoStatus = statusRepository.findById(request.getStatusId())
+                .orElseThrow(() -> new RuntimeException("Status não encontrado"));
+
+        if (!novoStatus.getResponsavelId().equals(request.getResponsavelId())) {
+            throw new RuntimeException("Responsável inválido");
+        }
+
+        String atual = solicitacao.getStatus().getNome();
+        String novo = novoStatus.getNome();
+
+        if (atual.equals("ABERTA") && novo.equals("EM_ANALISE")) {
+            // transição válida
+        }
+        else if (atual.equals("EM_ANALISE") && novo.equals("APROVADA")) {
+            // transição válida
+        }
+        else if (atual.equals("EM_ANALISE") && novo.equals("REPROVADA")) {
+            // transição válida
+        }
+        else if (atual.equals("APROVADA") && novo.equals("EMITIDA")) {
+            // transição válida
+        }
+        else {
+
+            throw new RuntimeException("Transição inválida.");
+
+        }
+
+        solicitacao.setStatus(novoStatus);
+        solicitacao.setDataAlteracao(LocalDateTime.now());
+
+        solicitacaoRepository.save(solicitacao);
+
+        return solicitacaoMapper.map(solicitacao);
     }
 
 }
