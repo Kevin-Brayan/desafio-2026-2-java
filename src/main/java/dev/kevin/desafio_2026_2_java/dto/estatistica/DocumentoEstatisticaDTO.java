@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DocumentoEstatisticaDTO {
-    private String doocumento;
+    private String documento;
     private Long quantidade;
 }
