@@ -1,170 +1,292 @@
-# desafio-2026-2-java
-CORRESPONDENTE AO EDITAL N. 21/UNOESC-R/2025
+# Desafio TI DEV UNOESC 2026/2
 
-Desafio Programador I Unoesc
+Sistema desenvolvido como solução para o Desafio TI DEV UNOESC 2026/2 utilizando Java, Spring Boot, Spring Security, Thymeleaf, Flyway e MySQL.
 
-Este é o nosso desafio para a vaga de programador na Unoesc. Serão testadas as habilidades e qualidade de código ao transformar requisitos limitados em uma aplicação web.
+O sistema permite o gerenciamento de solicitações de documentos acadêmicos, disponibilizando uma interface web e uma API REST para cadastro, consulta e geração de estatísticas.
 
-**FAÇA O FORK DESTE REPOSITÓRIO E IMPLEMENTE O DESAFIO. O MANTENHA PÚBLICO, POIS QUEREMOS ACOMPANHAR SEUS COMMITS**
+---
 
-_Ao concluir o desafio, lembre de enviar um email para **recrutamentorh.jba@unoesc.edu.br, ti.coord@unoesc.edu.br e ti.dev@unoesc.edu.br**, com seu repositório. Lembre de incluir a documentação para que possamos rodar sua aplicação._
+# Tecnologias utilizadas
 
-## PONTOS OBRIGATÓRIOS
-* Java (21+)
-* Orientação a Objetos
-* Spring Boot 
-* Spring Data JPA
-* Maven
-* Git
-* REST
-* PostgreSQL ou Mysql
-* Hibernate
-* Documentação
+- Java 21
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Spring Security
+- JWT
+- Thymeleaf
+- Flyway
+- MySQL
+- Maven
+- Bootstrap 5
 
-## PONTOS DESEJÁVEIS
-* Organização em camadas
-* Tratamento de exceções
-* Thymeleaf ou React
-* Testes unitários
-* Docker
-* OpenAPI/Swagger
+---
 
-## PONTOS DIFERENCIAIS
-* Uso de JasperReports para emissão de relatórios.
+# Estrutura do projeto
 
-## AVALIAÇÃO
-O código será avaliado de acordo com os seguinte critérios:
+```
+src/main/java
+├── config
+├── controller
+│   ├── api
+│   └── view
+├── dto
+├── entity
+├── enums
+├── mapper
+├── repository
+└── service
+```
 
-* Documentação do processo necessário para rodar a aplicação;
-* **Estrutura do projeto;**
-* **Histórico do GIT;**
-* Build e execução da aplicação;
-* Completude das funcionalidades;
-* Qualidade de código (design pattern, manutenibilidade, clareza);
-* Boas práticas de UI;
-* **Sentido e coerência nas respostas aos questionamentos na entrevista de apresentação do desafio realizada pelo candidato.**
- 
-**OBS: Plágios tendem a ser desclassificados. Atenção com o uso excessivo de IA.**
+---
 
-**IMPORTANTE: Estamos buscando desenvolvedores que topam desafios, então mesmo não cumprindo todo os requisitos abaixo, seu esforço será avaliado.**
+# Pré-requisitos
 
-## DESAFIO 
+Antes de executar a aplicação é necessário possuir:
 
-Sistema de Gestão de Solicitações de Documentos Acadêmicos
+- Java 21
+- Maven 3.9+
+- MySQL Server
 
-**Contexto**
+---
 
-Uma instituição de ensino deseja automatizar a solicitação de documentos acadêmicos (Histórico Escolar, Atestado de Matrícula, Declaração de Conclusão etc.), abandonando a utilização de documentos impressos.
-Para isso foi solicitado o desenvolvimento de uma API REST para receber e movimentar essas solicitações, com um painel de gerenciamento e dashboard de acompanhamento.
-Cada solicitação recebida deve possuir um fluxo de aprovação e emissão, com responsáveis por etapa.
+# Configuração do banco
 
-**Requisitos Funcionais**
+Crie um banco vazio no MySQL.
 
-_RF01 – Cadastro de Solicitações [POST]_
+Exemplo:
 
-Ao criar um novo registro de Solicitação para um Aluno ativo, deve receber as informações:
+```sql
+CREATE DATABASE desafio2026;
+```
 
-* id - int
-* aluno.id - Aluno (Entidade)
-* curso.id - Curso (Entidade)
-* tipoDocumento.id - TipoDocumento (Entidade)
-* dataSolicitacao - DateTime
-* status.id - Status (Entidade)
-* dataAlteracao - DateTime
-* prioridade - Enum (URGENTE, ALTA, NORMAL)
+Depois configure o arquivo
 
-_RF01.1 – Cadastro demais Entidades [POST] (**OPCIONAL**)_
+```
+src/main/resources/application.properties
+```
 
-Criar endpoints para criação/alteração/remoção das demais entidades Aluno, Curso, TipoDocumento e Status.
+alterando os dados de conexão:
 
-_RF02 – Consulta Solicitações [GET]_
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/desafio2026
+spring.datasource.username=root
+spring.datasource.password=sua_senha
+```
 
-Criar endpoints para pesquisar registros de Solicitação contendo filtros:
+---
 
-* Aluno.nome
-* Curso.nome
-* status
-* período
-* tipoDocumento.nome
-* paginação
+# Flyway
 
-Deve ser possivel verificar:
+As tabelas são criadas automaticamente através do Flyway.
 
-* Quantidade de solicitações por Status
-* Quantidade de solicitações por período
-* Solicitações realizadas por um Aluno
-* Média de tempo até emissão (entre solicitação e emissão)
-* Documentos mais solicitados
+As migrations encontram-se em:
 
-_RF03 – Alteração de Status [PATCH]_
+```
+src/main/resources/db/migration
+```
 
-Uma solicitação deve seguir um fluxo de aprovação de acordo com cada reponsável por uma etapa. Assim, implementar regras para atualizar a Solicitação:
+Não é necessário executar nenhum script manualmente.
 
-ABERTA -> EM_ANALISE -> APROVADA -> EMITIDA
-ABERTA -> EM_ANALISE -> REPROVADA
+---
 
-Deve receber as informações:
+# Executando a aplicação
 
-* solicitacao.id - int
-* status.id - int
-* status.responsavel - int
+Na raiz do projeto execute:
 
-Não permitir transições inválidas.
-Ao alterar o status de uma solicitação, será necessário informar o código do responsável, que deve ser igual ao responsável pelo status passado.
-Atualizar a dataAlteracao da Solicitação.
+Linux
 
-_RF04 - Segurança_
+```bash
+./mvnw spring-boot:run
+```
 
-Todos os endpoints existentes devem exigir a passagem de um Token JWT para seu funcionamento, o formato fica a sua escolha.
+Windows
 
-_RF05 – Auditoria_
+```cmd
+mvnw.cmd spring-boot:run
+```
 
-Criar tabelas de auditoria para todas as entidades, registrando todas as movimentações realizadas nas mesmas. 
+ou
 
-_RF06 – Dashboard_
+```bash
+mvn clean install
+```
 
-Montar dashboard onde seja possível visualizar e analisar os dados do RF03.
+seguido de
 
-_RF07 – Telas Complementares_ (**OPCIONAL**)
+```bash
+mvn spring-boot:run
+```
 
-Criar telas para realizar as operações da API.
+A aplicação será iniciada em
 
-## ESTRUTURAS PRIMÁRIAS
-Aqui uma sugestão de estrutura parcial para você seguir, melhorias ou correções são bem-vindas e encorajadas.
+```
+http://localhost:8080
+```
 
-**_Classe SOLICITACAO_**
+---
 
-* "id" - int (auto-gerado)
-* "aluno" - Relacionamento com a classe Aluno
-* "curso" - Relacionamento com a classe Curso
-* "tipo" - Relacionamento com a classe TipoDocumento
-* "dataSolicitacao" - DateTime (data criação)
-* "dataAlteracao" - DateTime (data última movimentação)
-* "status" - Relacionamento com a classe Status
-* "prioridade" - Enum
+# Autenticação
 
-**_Classe ALUNO**
+O sistema utiliza autenticação baseada em JWT.
 
-* "id" - int (auto-gerado)
-* "nome" - string
-* "solicitacoes" - Set de Solicitacao
-* "ativo" - boolean
+Após realizar login é criado um cookie HttpOnly contendo o token JWT utilizado nas requisições autenticadas.
 
-**_Classe CURSO**
+---
 
-* "id" - int (auto-gerado)
-* "nome" - string
+# Interface Web
 
-**_Classe TIPODOCUMENTO**
+Após iniciar a aplicação, as principais páginas disponíveis são:
 
-* "id" - int (auto-gerado)
-* "nome" - string
+| Página | URL |
+|---------|-----|
+| Login | `/auth/login` |
+| Cadastro | `/auth/register` |
+| Dashboard | `/dashboard` |
+| Solicitações | `/solicitacoes` |
+| Nova solicitação | `/solicitacoes/nova` |
 
-**_Classe STATUS**
+---
 
-* "id" - int (auto-gerado)
-* "nome" - string
-* "responsavel" - int
-* "finalizaSolicitacao" - boolean
+# Endpoints da API
 
-**IMPORTANTE: Lembrando que a não completude de todos os pontos, não necessariamente é fator reprovatório, seu esforço será avaliado.**
+## Autenticação
+
+### Registrar usuário
+
+```
+POST /auth/register
+```
+
+### Login
+
+```
+POST /auth/login
+```
+
+---
+
+## Alunos
+
+Cadastrar aluno
+
+```
+POST /aluno/cadastrar
+```
+
+---
+
+## Cursos
+
+Cadastrar curso
+
+```
+POST /curso/cadastrar
+```
+
+---
+
+## Status
+
+Cadastrar status
+
+```
+POST /status/cadastrar
+```
+
+---
+
+## Tipos de Documento
+
+Cadastrar tipo de documento
+
+```
+POST /tipoDocumento/cadastrar
+```
+
+---
+
+## Solicitações
+
+Cadastrar
+
+```
+POST /solicitacao/cadastrar
+```
+
+Listar
+
+```
+GET /solicitacao/listar
+```
+
+Parâmetros opcionais:
+
+| parâmetro | descrição |
+|-----------|-----------|
+| aluno | nome do aluno |
+| curso | nome do curso |
+| status | nome do status |
+| tipoDocumento | tipo do documento |
+| inicio | data inicial |
+| fim | data final |
+| page | página |
+| size | quantidade por página |
+
+---
+
+Alterar status
+
+```
+PATCH /solicitacao/status
+```
+
+---
+
+# Estatísticas
+
+Solicitações por status
+
+```
+GET /solicitacao/estatisticas/status
+```
+
+Solicitações por período
+
+```
+GET /solicitacao/estatisticas/periodo
+```
+
+Documentos mais solicitados
+
+```
+GET /solicitacao/estatisticas/documentos-mais-solicitados
+```
+
+Tempo médio de emissão
+
+```
+GET /solicitacao/estatisticas/media
+```
+
+---
+
+# Funcionalidades
+
+- Cadastro de usuários
+- Login com JWT
+- Cadastro de alunos
+- Cadastro de cursos
+- Cadastro de status
+- Cadastro de tipos de documento
+- Cadastro de solicitações
+- Consulta paginada
+- Filtros por aluno, curso, status, documento e período
+- Dashboard com estatísticas
+- Alteração de status da solicitação
+
+---
+
+# Licença
+
+Este projeto foi desenvolvido para fins acadêmicos como parte do Desafio TI DEV UNOESC 2026/2.
