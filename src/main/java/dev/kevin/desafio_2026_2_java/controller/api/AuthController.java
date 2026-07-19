@@ -1,4 +1,4 @@
-package dev.kevin.desafio_2026_2_java.controller;
+package dev.kevin.desafio_2026_2_java.controller.api;
 
 
 import dev.kevin.desafio_2026_2_java.config.TokenConfig;
@@ -9,6 +9,7 @@ import dev.kevin.desafio_2026_2_java.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,18 +29,37 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenConfig tokenConfig;
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
+
+    @ResponseBody
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> loginApi(@RequestBody LoginRequest request, HttpServletResponse response) {
+        autenticar(request, response);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/register")
-    public String registerPage() {
-        return "register";
+    @ResponseBody
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
+
+        registrarUsuario(request);
+        return ResponseEntity.ok().build();
+
     }
 
-    @PostMapping("/login")
-    public ResponseEntity login(
+
+
+    public void registrarUsuario(RegisterRequest request) {
+        Usuario novoUsuario = new Usuario();
+
+        novoUsuario.setNome(request.nome());
+        novoUsuario.setEmail(request.email());
+        novoUsuario.setSenha(passwordEncoder.encode(request.senha()));
+
+        usuarioRepository.save(novoUsuario);
+    }
+
+
+    public void autenticar(
             @RequestBody LoginRequest request,
             HttpServletResponse response
     ) {
@@ -60,22 +80,6 @@ public class AuthController {
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return ResponseEntity.ok().build();
-    }
-
-
-    @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterRequest request) {
-
-        Usuario novoUsuario = new Usuario();
-
-        novoUsuario.setNome(request.nome());
-        novoUsuario.setEmail(request.email());
-        novoUsuario.setSenha(passwordEncoder.encode(request.senha()));
-
-        usuarioRepository.save(novoUsuario);
-
-        return ResponseEntity.ok().build();
     }
 
 }

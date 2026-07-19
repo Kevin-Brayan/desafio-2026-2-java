@@ -1,4 +1,4 @@
-package dev.kevin.desafio_2026_2_java.controller;
+package dev.kevin.desafio_2026_2_java.controller.api;
 
 import dev.kevin.desafio_2026_2_java.dto.StatusDTO;
 import dev.kevin.desafio_2026_2_java.service.StatusService;

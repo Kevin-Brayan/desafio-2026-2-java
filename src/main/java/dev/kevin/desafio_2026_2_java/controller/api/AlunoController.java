@@ -1,4 +1,4 @@
-package dev.kevin.desafio_2026_2_java.controller;
+package dev.kevin.desafio_2026_2_java.controller.api;
 
 import dev.kevin.desafio_2026_2_java.dto.AlunoDTO;
 import dev.kevin.desafio_2026_2_java.service.AlunoService;
@@ -12,11 +12,6 @@ public class AlunoController {
 
     public AlunoController(AlunoService alunoService) {
         this.alunoService = alunoService;
-    }
-
-    @GetMapping("/cadastrar")
-    public String cadastrarAluno() {
-        return "Testando cadastro aluno";
     }
 
     @PostMapping("/cadastrar")
