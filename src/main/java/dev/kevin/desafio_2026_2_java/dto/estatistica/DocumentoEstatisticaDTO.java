@@ -1,4 +1,4 @@
-package dev.kevin.desafio_2026_2_java.dto;
+package dev.kevin.desafio_2026_2_java.dto.estatistica;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

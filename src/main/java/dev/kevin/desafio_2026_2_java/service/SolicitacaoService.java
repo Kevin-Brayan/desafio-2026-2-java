@@ -1,6 +1,10 @@
 package dev.kevin.desafio_2026_2_java.service;
 
 import dev.kevin.desafio_2026_2_java.dto.*;
+import dev.kevin.desafio_2026_2_java.dto.estatistica.DocumentoEstatisticaDTO;
+import dev.kevin.desafio_2026_2_java.dto.estatistica.MediaDTO;
+import dev.kevin.desafio_2026_2_java.dto.estatistica.PeriodoEstatisticaDTO;
+import dev.kevin.desafio_2026_2_java.dto.estatistica.StatusEstatisticaDTO;
 import dev.kevin.desafio_2026_2_java.entity.*;
 import dev.kevin.desafio_2026_2_java.entity.Solicitacao;
 import dev.kevin.desafio_2026_2_java.mapper.SolicitacaoMapper;
