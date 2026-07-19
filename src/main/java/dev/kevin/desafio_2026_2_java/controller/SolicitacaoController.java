@@ -57,11 +57,17 @@ public class SolicitacaoController {
         return solicitacaoService.documentosMaisSolicitados();
     }
 
+    @GetMapping("/estatisticas/media")
+    public MediaDTO mediaEmissaoHoras() {
+        return solicitacaoService.mediaEmissaoHoras();
+    }
+
 //    Alterar status
     @PatchMapping("/status")
     public SolicitacaoDTO alterarStatus(@RequestBody AlterarStatusDTO request) {
         return solicitacaoService.alterarStatus(request);
     }
+
 
 
 }

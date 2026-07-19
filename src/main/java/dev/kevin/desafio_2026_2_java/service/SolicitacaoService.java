@@ -175,4 +175,10 @@ public class SolicitacaoService {
         return solicitacaoMapper.map(solicitacao);
     }
 
+    public MediaDTO mediaEmissaoHoras() {
+        Double media = solicitacaoRepository.mediaEmissaoHoras();
+
+        return new MediaDTO(media);
+    }
+
 }

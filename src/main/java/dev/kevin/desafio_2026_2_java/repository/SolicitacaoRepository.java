@@ -59,4 +59,13 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     ORDER BY COUNT(s) DESC
     """)
     List<Object[]> documentosMaisSolicitados();
+
+    @Query("""
+    SELECT AVG(TIMESTAMPDIFF(HOUR,
+    s.dataSolicitacao,
+    s.dataAlteracao))
+    FROM Solicitacao s
+    WHERE s.status.nome = 'EMITIDA'
+    """)
+    Double mediaEmissaoHoras();
 }

@@ -1,9 +1,5 @@
 package dev.kevin.desafio_2026_2_java.dto;
 
-import dev.kevin.desafio_2026_2_java.entity.Aluno;
-import dev.kevin.desafio_2026_2_java.entity.Curso;
-import dev.kevin.desafio_2026_2_java.entity.Status;
-import dev.kevin.desafio_2026_2_java.entity.TipoDocumento;
 import dev.kevin.desafio_2026_2_java.enums.Prioridade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
