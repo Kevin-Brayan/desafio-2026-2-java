@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Nova Solicitação</title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="d-flex">
+
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <main class="container p-4">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+                Nova Solicitação
+            </div>
+
+            <div class="card-body">
+
+                <form
+                        method="post"
+                        th:action="@{/solicitacoes/nova}"
+                        th:object="${solicitacao}">
+
+                    <div class="mb-3">
+
+                        <label>Aluno</label>
+
+                        <select
+                                class="form-select"
+                                th:field="*{alunoId}">
+
+                            <option
+                                    th:each="aluno : ${alunos}"
+                                    th:value="${aluno.id}"
+                                    th:text="${aluno.nome}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Curso</label>
+
+                        <select
+                                class="form-select"
+                                th:field="*{cursoId}">
+
+                            <option
+                                    th:each="curso : ${cursos}"
+                                    th:value="${curso.id}"
+                                    th:text="${curso.nome}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Tipo de Documento</label>
+
+                        <select
+                                class="form-select"
+                                th:field="*{tipoDocumentoId}">
+
+                            <option
+                                    th:each="tipo : ${tipos}"
+                                    th:value="${tipo.id}"
+                                    th:text="${tipo.nome}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Prioridade</label>
+
+                        <select class="form-select" name="prioridade">
+                            <option value="NORMAL">Normal</option>
+                            <option value="ALTA">Alta</option>
+                            <option value="URGENTE">Urgente</option>
+                        </select>
+
+                    </div>
+
+                    <input
+                            type="hidden"
+                            th:field="*{statusId}"
+                            value="1">
+
+                    <button class="btn btn-success">
+                        Salvar
+                    </button>
+
+                    <a
+                            th:href="@{/solicitacoes}"
+                            class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

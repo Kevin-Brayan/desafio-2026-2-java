@@ -2,9 +2,7 @@ package dev.kevin.desafio_2026_2_java.controller.view;
 
 import dev.kevin.desafio_2026_2_java.dto.SolicitacaoDTO;
 import dev.kevin.desafio_2026_2_java.mapper.SolicitacaoMapper;
-import dev.kevin.desafio_2026_2_java.repository.SolicitacaoRepository;
-import dev.kevin.desafio_2026_2_java.repository.StatusRepository;
-import dev.kevin.desafio_2026_2_java.repository.TipoDocRepository;
+import dev.kevin.desafio_2026_2_java.repository.*;
 import dev.kevin.desafio_2026_2_java.service.SolicitacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -28,8 +24,35 @@ public class SolicitacaoViewController {
     private final StatusRepository statusRepository;
     private final TipoDocRepository tipoDocRepository;
 
+    private final AlunoRepository alunoRepository;
+    private final CursoRepository cursoRepository;
+
     private final SolicitacaoMapper solicitacaoMapper;
     private final SolicitacaoService solicitacaoService;
+
+
+    @GetMapping("/nova")
+    public String novaSolicitacao(Model model) {
+
+        model.addAttribute("solicitacao", new SolicitacaoDTO());
+
+        model.addAttribute("alunos", alunoRepository.findAll());
+        model.addAttribute("cursos", cursoRepository.findAll());
+        model.addAttribute("tipos", tipoDocRepository.findAll());
+        model.addAttribute("statusList", statusRepository.findAll());
+
+        return "nova-solicitacao";
+    }
+
+    @PostMapping("/nova")
+    public String salvarSolicitacao(@ModelAttribute SolicitacaoDTO dto) {
+
+        solicitacaoService.cadastrarSolicitacao(dto);
+
+        return "redirect:/solicitacoes";
+    }
+
+
 
     @GetMapping
     public String listarSolicitacoes(
