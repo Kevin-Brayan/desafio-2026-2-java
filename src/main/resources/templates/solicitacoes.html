@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Solicitações</title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="d-flex">
+
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <main class="flex-grow-1 p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h2>Solicitações</h2>
+
+            <a href="#" class="btn btn-primary">
+                Nova Solicitação
+            </a>
+
+        </div>
+
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+                Filtros
+            </div>
+
+            <div class="card-body">
+
+                <form method="get" th:action="@{/solicitacoes}">
+                
+                    <div class="row g-3">
+                
+                        <div class="col-md-4">
+                
+                            <label class="form-label">Filtrar por</label>
+                
+                            <select id="tipoFiltro" class="form-select">
+                
+                                <option value="">Selecione...</option>
+                                <option value="aluno">Aluno</option>
+                                <option value="curso">Curso</option>
+                                <option value="status">Status</option>
+                                <option value="tipo">Tipo de Documento</option>
+                                <option value="periodo">Período</option>
+                
+                            </select>
+                
+                        </div>
+                
+                        <div class="col-md-8" id="filtroAluno" style="display:none;">
+                
+                            <label class="form-label">Aluno</label>
+                
+                            <input class="form-control" name="aluno" th:value="${param.aluno}">
+                
+                        </div>
+                
+                        <div class="col-md-8" id="filtroCurso" style="display:none;">
+                
+                            <label class="form-label">Curso</label>
+                
+                            <input class="form-control" name="curso" th:value="${param.curso}">
+                
+                        </div>
+                
+                        <div class="col-md-8" id="filtroStatus" style="display:none">
+                        
+                            <label>Status</label>
+                        
+                            <select class="form-select" name="status">
+                        
+                                <option value="">Selecione...</option>
+                        
+                                <option th:each="status : ${statusList}" th:value="${status.nome}" th:text="${status.nome}">
+                                </option>
+                        
+                            </select>
+                        
+                        </div>
+                
+                        <div id="filtroTipo" style="display:none">
+                        
+                            <label>Tipo de Documento</label>
+                        
+                            <select class="form-select" name="tipoDocumento">
+                        
+                                <option value="">Selecione...</option>
+                        
+                                <option th:each="tipo : ${tipos}" th:value="${tipo.nome}" th:text="${tipo.nome}">
+                                </option>
+                        
+                            </select>
+                        
+                        </div>
+                
+                        <div id="filtroPeriodo" style="display:none">
+                        
+                            <div class="row">
+                        
+                                <div class="col">
+                        
+                                    <label>Data Inicial</label>
+                        
+                                    <input type="date" class="form-control" name="inicio">
+                        
+                                </div>
+                        
+                                <div class="col">
+                        
+                                    <label>Data Final</label>
+                        
+                                    <input type="date" class="form-control" name="fim">
+                        
+                                </div>
+                        
+                            </div>
+                        
+                        </div>
+                
+                        <div class="col-12">
+                
+                            <button class="btn btn-primary">
+                                Pesquisar
+                            </button>
+                
+                            <a th:href="@{/solicitacoes}" class="btn btn-secondary">
+                                Limpar
+                            </a>
+                
+                        </div>
+                
+                    </div>
+                
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+                Lista de Solicitações
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Aluno</th>
+
+                            <th>Curso</th>
+
+                            <th>Documento</th>
+
+                            <th>Status</th>
+
+                            <th>Prioridade</th>
+
+                            <th>Data</th>
+
+                            <th>Ações</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr
+                                th:each="solicitacao : ${pagina.content}">
+
+                            <td th:text="${solicitacao.id}"></td>
+
+                            <td th:text="${solicitacao.alunoNome}"></td>
+
+                            <td th:text="${solicitacao.cursoNome}"></td>
+
+                            <td th:text="${solicitacao.tipoDocumentoNome}"></td>
+
+                            <td>
+                                <span
+                                        class="badge bg-primary"
+                                        th:text="${solicitacao.statusNome}">
+                                </span>
+                            </td>
+
+                            <td th:text="${solicitacao.prioridade}"></td>
+
+                            <td th:text="${#temporals.format(solicitacao.dataSolicitacao,'dd/MM/yyyy HH:mm')}"></td>
+
+                            <td>
+
+                                <a
+                                        href="#"
+                                        class="btn btn-sm btn-outline-primary">
+                                    Alterar Status
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

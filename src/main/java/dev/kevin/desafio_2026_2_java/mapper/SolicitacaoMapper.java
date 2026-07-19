@@ -39,6 +39,12 @@ public class SolicitacaoMapper {
         solicitacaoDTO.setStatusId(solicitacao.getStatus().getId());
         solicitacaoDTO.setPrioridade(solicitacao.getPrioridade());
 
+
+        solicitacaoDTO.setAlunoNome(solicitacao.getAluno().getNome());
+        solicitacaoDTO.setCursoNome(solicitacao.getCurso().getNome());
+        solicitacaoDTO.setTipoDocumentoNome(solicitacao.getTipoDocumento().getNome());
+        solicitacaoDTO.setStatusNome(solicitacao.getStatus().getNome());
+
         return solicitacaoDTO;
     }
 }

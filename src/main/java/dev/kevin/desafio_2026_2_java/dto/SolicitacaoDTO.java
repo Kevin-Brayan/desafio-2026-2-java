@@ -27,4 +27,11 @@ public class SolicitacaoDTO {
     private Long statusId;
 
     private Prioridade prioridade;
+
+
+
+    private String alunoNome;
+    private String cursoNome;
+    private String tipoDocumentoNome;
+    private String statusNome;
 }

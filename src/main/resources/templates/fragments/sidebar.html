@@ -10,43 +10,47 @@
         <ul class="nav nav-pills flex-column mb-auto">
 
             <li class="nav-item">
-                <a th:href="@{/dashboard}" class="nav-link active">
+                <a th:href="@{/dashboard}" 
+                    class="nav-link text-dark"
+                    th:classappend="${activePage == 'dashboard'} ? ' active text-white'">
                     Dashboard
                 </a>
             </li>
 
             <li>
-                <a href="#" class="nav-link text-dark">
+                <a th:href="@{/solicitacoes}" 
+                    class="nav-link text-dark" 
+                    th:classappend="${activePage == 'solicitacoes'} ? ' active text-white'">
                     Solicitações
                 </a>
             </li>
 
             <li>
-                <a href="#" class="nav-link text-dark">
+                <a th:href="@{/alunos}" class="nav-link text-dark">
                     Alunos
                 </a>
             </li>
 
             <li>
-                <a href="#" class="nav-link text-dark">
+                <a th:href="@{/cursos}" class="nav-link text-dark">
                     Cursos
                 </a>
             </li>
 
             <li>
-                <a href="#" class="nav-link text-dark">
+                <a th:href="@{/tipos-documento}" class="nav-link text-dark">
                     Tipos de Documento
                 </a>
             </li>
 
             <li>
-                <a href="#" class="nav-link text-dark">
+                <a th:href="@{/status}" class="nav-link text-dark">
                     Status
                 </a>
             </li>
 
             <li>
-                <a href="#" class="nav-link text-dark">
+                <a th:href="@{/auditoria}" class="nav-link text-dark">
                     Auditoria
                 </a>
             </li>

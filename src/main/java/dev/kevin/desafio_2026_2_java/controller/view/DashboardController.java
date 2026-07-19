@@ -21,6 +21,8 @@ public class DashboardController {
         model.addAttribute("media", solicitacaoService.mediaEmissaoHoras());
         model.addAttribute("documentos", solicitacaoService.documentosMaisSolicitados());
 
+        model.addAttribute("activePage", "dashboard");
+
         return "dashboard";
     }
 
